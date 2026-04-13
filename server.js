@@ -64,8 +64,10 @@ app.post("/command", (req, res) => {
 });
 
 // =======================
-// LISTEN
+// LISTEN (FIX IMPORTANTE)
 // =======================
-app.listen(3000, "0.0.0.0", () => {
-  console.log("⚡ SERVER RUNNING http://192.168.0.1:3000"); 
+const PORT = process.env.PORT || 3000;
+
+app.listen(PORT, "0.0.0.0", () => {
+  console.log(`⚡ SERVER RUNNING ON PORT ${PORT}`);
 });
