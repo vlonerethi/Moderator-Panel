@@ -1,6 +1,6 @@
-import express from "express";
-import cors from "cors";
-import dotenv from "dotenv";
+const express = require("express");
+const cors = require("cors");
+const dotenv = require("dotenv");
 
 dotenv.config();
 
@@ -10,12 +10,6 @@ app.use(cors());
 app.use(express.json());
 
 // =======================
-// CACHE
-// =======================
-let cachedPlayers = [];
-let lastUpdate = 0;
-
-// =======================
 // HEALTH CHECK
 // =======================
 app.get("/", (req, res) => {
@@ -23,51 +17,10 @@ app.get("/", (req, res) => {
 });
 
 // =======================
-// ROBLOX PUSH
-// =======================
-app.post("/update-players", (req, res) => {
-  console.log("🔥 ROBLOX LLEGÓ:");
-  console.log(JSON.stringify(req.body, null, 2));
-
-  const players = req.body?.players;
-
-  if (!Array.isArray(players)) {
-    return res.status(400).json({ ok: false });
-  }
-
-  cachedPlayers = players;
-  lastUpdate = Date.now();
-
-  console.log(`✅ Players: ${players.length}`);
-
-  res.json({ ok: true, count: players.length });
-});
-
-// =======================
-// FRONTEND
-// =======================
-app.get("/players", (req, res) => {
-  res.json({
-    players: cachedPlayers,
-    count: cachedPlayers.length,
-    age_ms: Date.now() - lastUpdate,
-    source: cachedPlayers.length ? "live" : "none",
-  });
-});
-
-// =======================
-// COMMANDS
-// =======================
-app.post("/command", (req, res) => {
-  console.log("📩 COMMAND:", req.body);
-  res.json({ ok: true });
-});
-
-// =======================
-// LISTEN (FIX IMPORTANTE)
+// PORT
 // =======================
 const PORT = process.env.PORT || 3000;
 
-app.listen(PORT, "0.0.0.0", () => {
-  console.log(`⚡ SERVER RUNNING ON PORT ${PORT}`);
+app.listen(PORT, () => {
+  console.log(`🚀 Server running on port ${PORT}`);
 });
